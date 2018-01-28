@@ -1,0 +1,63 @@
+---
+- hosts: all
+  tasks:
+  - name: Add vagrant folder to fstab
+    become: true
+    mount:
+      path: /vagrant
+      src: vagrant
+      fstype: vboxsf
+      state: present
+
+  - name: Update All Packages
+    become: true
+    apt:
+      update_cache: yes
+      upgrade: dist
+
+  - name: Install Devtools
+    action: apt pkg={{item}} state=installed
+    become: true
+    with_items:
+      - git
+      - vim
+      - tmux
+      - docker.io
+      - zsh
+
+  - name: Set default shell
+    become: true
+    user:
+      name: vagrant
+      shell: /usr/bin/zsh
+
+  - name: Download oh-my-zsh
+    get_url: url=https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh dest=/tmp/omz.sh
+
+  - name: Install oh-my-zsh
+    script: /tmp/omz.sh
+    ignore_errors: yes
+
+  - name: Create themes directory
+    file:
+      path: "/home/vagrant/.oh-my-zsh/custom/themes"
+      state: directory
+
+  - name: Download Bullettrain zsh theme
+    get_url: url=http://raw.github.com/caiogondim/bullet-train-oh-my-zsh-theme/master/bullet-train.zsh-theme dest=/home/vagrant/.oh-my-zsh/custom/themes/bullet-train.zsh-theme
+
+  - name: Download Node Version Manager (NVM)
+    get_url: url=https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh dest=/tmp/nvm.sh
+
+  - name: Install Node Version Manager (NVM)
+    script: /tmp/nvm.sh
+
+  - name: Remove unneeded dependancies
+    become: true
+    apt:
+      autoremove: yes
+
+  - name: Cleanup
+    become: true
+    apt:
+      autoclean: yes
