@@ -1,6 +1,10 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-17.10"
 
+  ENV['LC_ALL']="en_US.UTF-8"
+  ENV['LC_CTYPE']="en_US.UTF-8"
+  ENV['LANG']="en_US.UTF-8"
+
   config.vm.provider "virtualbox" do |v|
     v.gui = false
     v.memory = 2048
