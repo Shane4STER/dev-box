@@ -24,23 +24,13 @@
       - tmux
       - docker.io
       - zsh
+      - tig
 
   - name: Set default shell
     become: true
     user:
       name: vagrant
       shell: /usr/bin/zsh
-
-  - name: Install oh-my-zsh
-    git:
-      repo: https://github.com/robbyrussell/oh-my-zsh.git
-      dest: /home/vagrant/.oh-my-zsh
-      force: yes
-
-  - name: Create themes directory
-    file:
-      path: "/home/vagrant/.oh-my-zsh/custom/themes"
-      state: directory
 
   - name: Download custom configs
     git:
@@ -50,9 +40,6 @@
 
   - name: Link custom configs
     script: /home/vagrant/.etc/link.sh/link.sh -u /home/vagrant/.etc/.link.conf -wf
-
-  - name: Download Bullettrain zsh theme
-    get_url: url=http://raw.github.com/caiogondim/bullet-train-oh-my-zsh-theme/master/bullet-train.zsh-theme dest=/home/vagrant/.oh-my-zsh/custom/themes/bullet-train.zsh-theme
 
   - name: Download Node Version Manager (NVM)
     git:
