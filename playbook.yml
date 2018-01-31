@@ -18,13 +18,7 @@
   - name: Install Devtools
     action: apt pkg={{item}} state=installed
     become: true
-    with_items:
-      - git
-      - vim
-      - tmux
-      - docker.io
-      - zsh
-      - tig
+    with_items: "{{ packages  }}"
 
   - name: Set default shell
     become: true
@@ -34,20 +28,19 @@
 
   - name: Download custom configs
     git:
-      repo: https://github.com/Shane4STER/etc.git
+      repo: "{{ dotfile_repo  }}"
       dest: /home/vagrant/.etc
-      force: yes
 
   - name: Link custom configs
-    script: /home/vagrant/.etc/link.sh/link.sh -u /home/vagrant/.etc/.link.conf -wf
+    script: ~/.etc/link.sh/link.sh -u ~/.etc/.link.conf -wf
 
   - name: Download Node Version Manager (NVM)
     git:
       repo: https://github.com/creationix/nvm.git
-      dest: /home/vagrant/.nvm
+      dest: ~/.nvm
       force: yes
       version: v0.33.8
-
+    when: install_nvm
 
   - name: Remove unneeded dependancies
     become: true
