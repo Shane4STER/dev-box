@@ -13,18 +13,6 @@
     command: /usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
     become: true
 
-  - name: Add GCloud apt repository
-    become: true
-    apt_repository:
-      repo: deb http://packages.cloud.google.com/apt cloud-sdk-artful main
-      state: present
-
-  - name: Add GCloud signing key
-    become: true
-    apt_key:
-      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-      state: present 
-
   - name: Update All Packages
     become: true
     apt:

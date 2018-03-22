@@ -7,8 +7,6 @@
     "tmux",
     "docker.io",
     "zsh",
-    "tig",
-    "google-cloud-sdk",
-    "kubectl"
+    "tig"
   ]
 }
