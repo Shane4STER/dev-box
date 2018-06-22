@@ -9,18 +9,14 @@
       fstype: vboxsf
       state: present
 
-  - name: Update locale
-    command: /usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
-    become: true
-
   - name: Update All Packages
     become: true
-    apt:
+    pacman:
       update_cache: yes
-      upgrade: dist
+      upgrade: yes
 
   - name: Install Devtools
-    action: apt pkg={{item}} state=installed
+    action: pacman pkg={{item}} state=latest
     become: true
     with_items: "{{ packages  }}"
 
@@ -43,15 +39,31 @@
       repo: https://github.com/creationix/nvm.git
       dest: ~/.nvm
       force: yes
-      version: v0.33.8
+      version: v0.33.11
     when: install_nvm
 
-  - name: Remove unneeded dependancies
-    become: true
-    apt:
-      autoremove: yes
+  - name: Download TFenv
+    git:
+      repo: https://github.com/kamatama41/tfenv.git
+      dest: ~/.tfenv
+      force: yes
+    when: install_tfenv
 
-  - name: Cleanup
-    become: true
-    apt:
-      autoclean: yes
+  - name: Download PKenv
+    git:
+      repo: https://github.com/iamhsa/pkenv.git
+      dest: ~/.pkenv
+      force: yes
+    when: install_pkenv
+
+  - name: Add TFEnv to PATH
+    copy:
+      content: PATH="$PATH:$HOME/.tfenv/bin"
+      dest: ~/.etc/zsh/zsh-os-conf/local-post/50-tfenv.zsh
+    when: install_tfenv
+
+  - name: Add PKEnv to PATH
+    copy:
+      content: PATH="$PATH:$HOME/.pkenv/bin"
+      dest: ~/.etc/zsh/zsh-os-conf/local-post/50-pkenv.zsh
+    when: install_pkenv

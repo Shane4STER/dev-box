@@ -1,12 +1,19 @@
 {
   "dotfile_repo": "https://github.com/Shane4STER/etc.git",
   "install_nvm": "true",
+  "install_tfenv": true,
+  "install_pkenv": true,
   "packages": [
+    "ctags",
+    "docker",
     "git",
-    "vim",
+    "python",
+    "python2",
+    "tig",
     "tmux",
-    "docker.io",
-    "zsh",
-    "tig"
+    "tree",
+    "unzip",
+    "vim",
+    "zsh"
   ]
 }

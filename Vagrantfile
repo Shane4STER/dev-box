@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "bento/ubuntu-17.10"
+  config.vm.box = "archlinux/archlinux"
 
   ENV['LC_ALL']="en_US.UTF-8"
   ENV['LC_CTYPE']="en_US.UTF-8"
